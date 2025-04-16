@@ -10,10 +10,8 @@ import java.util.List;
 @Repository
 public interface CaptainRepository extends JpaRepository<Captain, Long> {
 
-    // Query to find all captains with a rating above a threshold
     @Query("SELECT c FROM Captain c WHERE c.avgRatingScore > :ratingThreshold")
     List<Captain> findCaptainsByRatingAbove(Double ratingThreshold);
 
-    // Query to find captain by license number
     Captain findByLicenseNumber(String licenseNumber);
 }

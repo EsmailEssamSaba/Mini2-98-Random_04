@@ -1,16 +1,11 @@
 package com.example.miniapp.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Customer {
 
     @Id
@@ -24,7 +19,49 @@ public class Customer {
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-    // One customer can have many trips
+
     @OneToMany(mappedBy = "customer")
-    private ArrayList<Trip> trips;
+    private List<Trip> trips;
+
+    public Customer() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
 }

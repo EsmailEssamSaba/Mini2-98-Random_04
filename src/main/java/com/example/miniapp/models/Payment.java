@@ -1,14 +1,8 @@
 package com.example.miniapp.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Payment {
 
     @Id
@@ -17,12 +11,53 @@ public class Payment {
 
     private Double amount;
 
-    private String paymentMethod; // e.g., "card", "cash"
+    private String paymentMethod;
 
-    private Boolean paymentStatus; // true if paid
+    private Boolean paymentStatus;
 
-    // One payment belongs to one trip
     @OneToOne
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
+
+    public Payment() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Boolean getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
 }
