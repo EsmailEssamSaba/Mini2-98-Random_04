@@ -1,7 +1,9 @@
 package com.example.miniapp.services;
 
 import com.example.miniapp.models.Payment;
+import com.example.miniapp.models.Trip;
 import com.example.miniapp.repositories.PaymentRepository;
+import com.example.miniapp.repositories.TripRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +12,25 @@ import java.util.List;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-
-    public PaymentService(PaymentRepository paymentRepository) {
+private final TripRepository tripRepository;
+    public PaymentService(PaymentRepository paymentRepository, TripRepository tripRepository) {
         this.paymentRepository = paymentRepository;
+        this.tripRepository = tripRepository;
     }
 
     public Payment addPayment(Payment payment) {
-        return paymentRepository.save(payment);
+        // Fetch Trip by ID from the Payment's Trip object
+        Trip trip = tripRepository.findById(payment.getTrip().getId())
+                .orElseThrow(() -> new RuntimeException("Trip not found"));
+        payment.setTrip(trip);
+
+        Payment savedPayment = paymentRepository.save(payment);
+
+        // Update the Trip's Payment reference
+        trip.setPayment(savedPayment);
+        tripRepository.save(trip);
+
+        return savedPayment;
     }
 
     public List<Payment> getAllPayments() {
@@ -27,15 +41,29 @@ public class PaymentService {
         return paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("Payment not found"));
     }
 
-    public Payment updatePayment(Long id, Payment payment) {
-        if (!paymentRepository.existsById(id)) {
-            throw new RuntimeException("Payment not found");
-        }
-        payment.setId(id);
-        return paymentRepository.save(payment);
+    public Payment updatePayment(Long id, Payment updatedPayment) {
+        Payment existingPayment = paymentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
+
+        existingPayment.setAmount(updatedPayment.getAmount());
+
+        existingPayment.setPaymentMethod(updatedPayment.getPaymentMethod());
+        existingPayment.setPaymentStatus(updatedPayment.getPaymentStatus());
+
+        return paymentRepository.save(existingPayment);
     }
 
+
     public void deletePayment(Long id) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
+        Trip trip = payment.getTrip();
+
+        if (trip != null) {
+            trip.setPayment(null);
+            tripRepository.save(trip);
+        }
+
         paymentRepository.deleteById(id);
     }
 

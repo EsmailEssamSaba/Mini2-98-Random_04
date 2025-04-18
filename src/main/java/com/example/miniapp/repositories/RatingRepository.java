@@ -12,4 +12,6 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
     List<Rating> findByEntityIdAndEntityType(Long entityId, String entityType);
 
     List<Rating> findByScoreGreaterThan(Integer score);
+
+
 }

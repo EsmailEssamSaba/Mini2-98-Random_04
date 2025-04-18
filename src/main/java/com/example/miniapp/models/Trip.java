@@ -27,9 +27,8 @@ public class Trip {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @OneToOne(mappedBy = "trip")
+    @OneToOne(mappedBy = "trip", optional = true)
     private Payment payment;
-
     public Trip() {}
 
     public Long getId() {
