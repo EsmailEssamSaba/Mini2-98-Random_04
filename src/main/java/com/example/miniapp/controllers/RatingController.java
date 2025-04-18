@@ -34,6 +34,7 @@ public class RatingController {
         return "Rating with ID " + id + " has been removed.";
     }
 
+
     @GetMapping("/findByEntity")
     public List<Rating> findRatingsByEntity(@RequestParam Long entityId, @RequestParam String entityType) {
         return ratingService.getRatingsByEntity(entityId, entityType);
