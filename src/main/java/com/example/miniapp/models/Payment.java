@@ -19,7 +19,15 @@ public class Payment {
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    public Payment() {}
+    public Payment(Double amount, String paymentMethod, boolean paymentStatus) {
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.amount = amount;
+    }
+
+    public Payment() {
+
+    }
 
     public Long getId() {
         return id;

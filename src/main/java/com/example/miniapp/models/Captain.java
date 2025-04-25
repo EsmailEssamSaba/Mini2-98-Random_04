@@ -23,7 +23,15 @@ public class Captain {
     private List<Trip> trips;
 
 
-    public Captain() {}
+    public Captain(String name, String licenseNumber, Double avgRatingScore) {
+        this.name = name;
+        this.licenseNumber = licenseNumber;
+        this.avgRatingScore = avgRatingScore;
+    }
+
+    public Captain() {
+
+    }
 
     public Long getId() {
         return id;
